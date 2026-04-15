@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<detailView xmlns="http://jmix.io/schema/flowui/detail-view"
+            title="msg://adminActionDetailView.title"
+            focusComponent="form">
+
+    <data>
+        <instance id="adminActionDc"
+                  class="com.marketplace.admin.entity.AdminAction">
+            <fetchPlan extends="_base"/>
+            <loader id="adminActionDl"/>
+        </instance>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+
+    <actions>
+        <action id="save" type="detail_saveClose"/>
+        <action id="saveAndContinue" type="detail_save"/>
+        <action id="close" type="detail_close"/>
+    </actions>
+
+    <content>
+        <formLayout id="form" dataContainer="adminActionDc" classNames="detail-form">
+            <textField id="actionTypeField" property="actionType" readOnly="false"/>
+            <textField id="adminIdField" property="adminId" readOnly="false"/>
+            <textField id="targetTypeField" property="targetType"/>
+            <textField id="targetIdField" property="targetId"/>
+            <textArea id="detailsField" property="details" height="9em"/>
+            <dateTimePicker id="createdAtField" property="createdAt" readOnly="true"/>
+            <dateTimePicker id="updatedAtField" property="updatedAt" readOnly="true"/>
+            <textField id="createdByField" property="createdBy" readOnly="true"/>
+            <textField id="updatedByField" property="updatedBy" readOnly="true"/>
+        </formLayout>
+    </content>
+
+</detailView>

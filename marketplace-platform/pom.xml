@@ -39,10 +39,10 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <bucket4j.version>8.18.0</bucket4j.version>
         <resilience4j.version>2.3.0</resilience4j.version>
-        <springdoc.version>3.0.2</springdoc.version>
+        <springdoc.version>3.0.0</springdoc.version>
         <lombok.version>1.18.44</lombok.version>
         <spring-ai.version>1.0.0-M6</spring-ai.version>
-        <jmix.version>2.2.0</jmix.version>
+        <jmix.version>2.8.0-RC1</jmix.version>
     </properties>
 
     <dependencyManagement>
@@ -124,6 +124,22 @@
 
     <repositories>
         <repository>
+            <id>jmix-releases</id>
+            <name>Jmix Releases</name>
+            <url>https://global.repo.jmix.io/repository/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jmix-premium-releases</id>
+            <name>Jmix Premium Releases</name>
+            <url>https://global.repo.jmix.io/repository/premium-releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
             <url>https://repo.spring.io/milestone</url>
@@ -141,6 +157,14 @@
         </repository>
     </repositories>
     <pluginRepositories>
+        <pluginRepository>
+            <id>jmix-releases</id>
+            <name>Jmix Releases</name>
+            <url>https://global.repo.jmix.io/repository/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
         <pluginRepository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<listView xmlns="http://jmix.io/schema/flowui/list-view"
+          title="msg://adminActionListView.title"
+          focusComponent="adminActionsDataGrid">
+
+    <data>
+        <collection id="adminActionsDc"
+                    class="com.marketplace.admin.entity.AdminAction">
+            <fetchPlan extends="_base"/>
+            <loader id="adminActionsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from admin_AdminAction e order by e.createdAt desc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+
+    <actions>
+        <action id="create" type="list_create"/>
+        <action id="edit" type="list_edit"/>
+        <action id="remove" type="list_remove"/>
+        <action id="excelExport" type="list_excelExport"/>
+    </actions>
+
+    <content>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="adminActionsDataGrid.create"/>
+            <button id="editBtn" action="adminActionsDataGrid.edit"/>
+            <button id="removeBtn" action="adminActionsDataGrid.remove"/>
+            <button id="excelExportBtn" action="adminActionsDataGrid.excelExport"/>
+        </hbox>
+        <genericFilter id="genericFilter" dataLoader="adminActionsDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <dataGrid id="adminActionsDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="adminActionsDc">
+            <columns>
+                <column property="actionType"/>
+                <column property="adminId"/>
+                <column property="targetType"/>
+                <column property="targetId"/>
+                <column property="details"/>
+                <column property="createdAt"/>
+                <column property="createdBy"/>
+            </columns>
+        </dataGrid>
+        <simplePagination id="pagination" dataLoader="adminActionsDl"/>
+    </content>
+
+</listView>

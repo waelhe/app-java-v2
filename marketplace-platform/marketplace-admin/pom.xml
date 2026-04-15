@@ -10,59 +10,88 @@
 
     <artifactId>marketplace-admin</artifactId>
     <name>marketplace-admin</name>
-    <description>Admin dashboard and back-office tools</description>
+    <description>Admin dashboard and back-office tools with Jmix FlowUI</description>
 
     <dependencies>
+        <!-- Jmix Core -->
         <dependency>
             <groupId>io.jmix.core</groupId>
             <artifactId>jmix-core-starter</artifactId>
         </dependency>
+
+        <!-- Jmix Data (EclipseLink) -->
         <dependency>
             <groupId>io.jmix.data</groupId>
             <artifactId>jmix-eclipselink-starter</artifactId>
         </dependency>
+
+        <!-- Jmix FlowUI - Modern Vaadin-based UI -->
         <dependency>
-            <groupId>io.jmix.ui</groupId>
-            <artifactId>jmix-ui-starter</artifactId>
+            <groupId>io.jmix.flowui</groupId>
+            <artifactId>jmix-flowui-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.jmix.ui</groupId>
-            <artifactId>jmix-ui-data-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jmix.ui</groupId>
-            <artifactId>jmix-ui-themes-compiled</artifactId>
-        </dependency>
+
+        <!-- Jmix Security - Core -->
         <dependency>
             <groupId>io.jmix.security</groupId>
             <artifactId>jmix-security-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.jmix.security</groupId>
-            <artifactId>jmix-security-ui-starter</artifactId>
-        </dependency>
+
+        <!-- Jmix Security - Data (Row-level) -->
         <dependency>
             <groupId>io.jmix.security</groupId>
             <artifactId>jmix-security-data-starter</artifactId>
         </dependency>
+
+        <!-- Jmix Security - FlowUI -->
+        <dependency>
+            <groupId>io.jmix.security</groupId>
+            <artifactId>jmix-security-flowui-starter</artifactId>
+        </dependency>
+
+        <!-- Jmix Audit / Entity Log -->
+        <dependency>
+            <groupId>io.jmix.audit</groupId>
+            <artifactId>jmix-audit-starter</artifactId>
+        </dependency>
+
+        <!-- Jmix Audit FlowUI -->
+        <dependency>
+            <groupId>io.jmix.audit</groupId>
+            <artifactId>jmix-audit-flowui-starter</artifactId>
+        </dependency>
+
+        <!-- Jmix LocalFS -->
         <dependency>
             <groupId>io.jmix.localfs</groupId>
             <artifactId>jmix-localfs-starter</artifactId>
         </dependency>
+
+        <!-- Jmix DataTools -->
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>io.jmix.datatools</groupId>
+            <artifactId>jmix-datatools-starter</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.jmix.datatools</groupId>
+            <artifactId>jmix-datatools-flowui-starter</artifactId>
+        </dependency>
+
+        <!-- Internal Module (exclude JPA/Hibernate - Jmix uses EclipseLink) -->
         <dependency>
             <groupId>com.marketplace</groupId>
             <artifactId>marketplace-common</artifactId>
             <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-jpa</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+
+        <!-- Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -71,5 +100,35 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- PostgreSQL -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- H2 for testing -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

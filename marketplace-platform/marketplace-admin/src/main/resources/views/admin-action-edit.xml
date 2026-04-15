@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://adminAction.edit.title">
+    <data>
+        <instance id="adminActionDc"
+                  class="com.marketplace.admin.entity.AdminAction">
+            <fetchPlan extends="_base"/>
+            <loader id="adminActionDl">
+                <query>
+                    <![CDATA[select e from AdminAction e where e.id = :id]]>
+                </query>
+            </loader>
+        </instance>
+    </data>
+    <layout>
+        <scrollBox id="scrollBox" spacing="true">
+            <formLayout id="formLayout" dataContainer="adminActionDc">
+                <textField id="adminIdField" property="adminId"/>
+                <textField id="actionTypeField" property="actionType"/>
+                <textField id="targetTypeField" property="targetType"/>
+                <textField id="targetIdField" property="targetId"/>
+                <textArea id="detailsField" property="details" rows="5"/>
+            </formLayout>
+            <hbox id="actionsPane" spacing="true">
+                <button id="saveBtn" action="saveAction"/>
+                <button id="cancelBtn" action="cancelAction"/>
+            </hbox>
+        </scrollBox>
+    </layout>
+    <actions>
+        <action id="saveAction" type="save"/>
+        <action id="cancelAction" type="cancel"/>
+    </actions>
+</view>

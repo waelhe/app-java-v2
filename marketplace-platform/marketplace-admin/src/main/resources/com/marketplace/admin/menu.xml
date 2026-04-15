@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="application" title="msg://menu.application.title" opened="true">
+        <item view="admin_AdminAction.list" title="msg://menu.admin_AdminAction.list.title"/>
+    </menu>
+
+    <menu id="administration" title="msg://menu.administration.title" opened="true">
+        <item view="sec_User.list" title="msg://menu.sec_User.list.title"/>
+        <item view="sec_Role.list" title="msg://menu.sec_Role.list.title"/>
+        <item view="sec_ResourceRoleModel.list" title="msg://menu.sec_ResourceRoleModel.list.title"/>
+        <item view="sec_RowLevelRoleModel.list" title="msg://menu.sec_RowLevelRoleModel.list.title"/>
+    </menu>
+
+    <menu id="audit" title="msg://menu.audit.title" opened="true">
+        <item view="audit_EntityLog.list" title="msg://menu.audit_EntityLog.list.title"/>
+        <item view="audit_SessionLog.list" title="msg://menu.audit_SessionLog.list.title"/>
+    </menu>
+
+    <menu id="datatools" title="msg://menu.datatools.title" opened="true">
+        <item view="datatl_EntityInspector.list" title="msg://menu.datatl_EntityInspector.list.title"/>
+    </menu>
+
+</menu-config>

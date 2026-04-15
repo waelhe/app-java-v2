@@ -64,11 +64,8 @@
             <artifactId>marketplace-messaging</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.marketplace</groupId>
-            <artifactId>marketplace-admin</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!-- marketplace-admin is a standalone Jmix FlowUI app, not included here to avoid
+             Hibernate/EclipseLink conflict. It runs as a separate Spring Boot application. -->
 
         <!-- Spring Boot Starters -->
         <dependency>
