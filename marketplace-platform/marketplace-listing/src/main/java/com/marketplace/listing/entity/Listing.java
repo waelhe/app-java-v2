@@ -69,7 +69,7 @@ public class Listing extends BaseEntity {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "dynamic_fields", columnDefinition = "jsonb")
-    private String dynamicFields = "{}";
+    private java.util.Map<String, Object> dynamicFields = new java.util.HashMap<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "listing")
     private List<ListingMedia> media = new ArrayList<>();
@@ -112,8 +112,8 @@ public class Listing extends BaseEntity {
     public void setLatitude(Double latitude) { this.latitude = latitude; }
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
-    public String getDynamicFields() { return dynamicFields; }
-    public void setDynamicFields(String dynamicFields) { this.dynamicFields = dynamicFields; }
+    public java.util.Map<String, Object> getDynamicFields() { return dynamicFields; }
+    public void setDynamicFields(java.util.Map<String, Object> dynamicFields) { this.dynamicFields = dynamicFields; }
     public List<ListingMedia> getMedia() { return media; }
     public void setMedia(List<ListingMedia> media) { this.media = media; }
 

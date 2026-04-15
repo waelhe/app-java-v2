@@ -6,6 +6,8 @@ import com.marketplace.user.entity.ConsumerProfile;
 import com.marketplace.user.entity.ProviderProfile;
 import com.marketplace.user.repository.ConsumerProfileRepository;
 import com.marketplace.user.repository.ProviderProfileRepository;
+import com.marketplace.user.entity.ProviderType;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +26,13 @@ public class UserProfileService {
     }
 
     @Transactional
-    public ProviderProfile createProviderProfile(UUID userId, String displayName) {
+    public ProviderProfile createProviderProfile(UUID userId, String displayName, ProviderType type) {
         if (providerProfileRepository.existsByUserIdAndDeletedFalse(userId)) {
             throw new BusinessException("Provider profile already exists for user: " + userId);
         }
-        return providerProfileRepository.save(new ProviderProfile(userId, displayName));
+        ProviderProfile profile = new ProviderProfile(userId, displayName);
+        profile.setType(type);
+        return providerProfileRepository.save(profile);
     }
 
     public ProviderProfile getProviderProfile(UUID userId) {
@@ -37,7 +41,7 @@ public class UserProfileService {
     }
 
     @Transactional
-    public ProviderProfile updateProviderProfile(UUID userId, String displayName, String bio, String specialties) {
+    public ProviderProfile updateProviderProfile(UUID userId, String displayName, String bio, List<String> specialties) {
         ProviderProfile profile = getProviderProfile(userId);
         if (displayName != null) profile.setDisplayName(displayName);
         if (bio != null) profile.setBio(bio);

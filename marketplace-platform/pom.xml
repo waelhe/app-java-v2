@@ -37,15 +37,23 @@
         <postgresql.version>42.7.5</postgresql.version>
         <flyway.version>11.3.4</flyway.version>
         <mapstruct.version>1.6.3</mapstruct.version>
-        <bucket4j.version>8.10.1</bucket4j.version>
+        <bucket4j.version>8.18.0</bucket4j.version>
         <resilience4j.version>2.3.0</resilience4j.version>
         <springdoc.version>3.0.2</springdoc.version>
         <lombok.version>1.18.44</lombok.version>
         <spring-ai.version>1.0.0-M6</spring-ai.version>
+        <jmix.version>2.2.0</jmix.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.jmix.bom</groupId>
+                <artifactId>jmix-bom</artifactId>
+                <version>${jmix.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>

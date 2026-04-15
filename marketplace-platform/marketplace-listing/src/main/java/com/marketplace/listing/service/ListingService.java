@@ -2,6 +2,7 @@ package com.marketplace.listing.service;
 
 import com.marketplace.common.dto.PagedResponse;
 import com.marketplace.common.exception.ResourceNotFoundException;
+import com.marketplace.listing.dto.CreateListingRequest;
 import com.marketplace.listing.entity.Listing;
 import com.marketplace.listing.entity.ListingCategory;
 import com.marketplace.listing.entity.ListingStatus;
@@ -42,15 +43,19 @@ public class ListingService {
     }
 
     @Transactional
-    public Listing createListing(UUID providerId, UUID categoryId, String title,
-                                  String description, String pricingModel,
-                                  BigDecimal basePrice, String currency, String address) {
-        ListingCategory category = categoryRepository.findByIdAndDeletedFalse(categoryId)
-            .orElseThrow(() -> new ResourceNotFoundException("Category", categoryId));
+    public Listing createListing(CreateListingRequest request) {
+        ListingCategory category = categoryRepository.findByIdAndDeletedFalse(request.getCategoryId())
+            .orElseThrow(() -> new ResourceNotFoundException("Category", request.getCategoryId()));
 
-        Listing listing = new Listing(providerId, category, title, description,
-            PricingModel.valueOf(pricingModel), basePrice, currency);
-        listing.setAddress(address);
+        Listing listing = new Listing(request.getProviderId(), category, request.getTitle(),
+            request.getDescription(), request.getPricingModel(), request.getBasePrice(), request.getCurrency());
+        
+        listing.setType(request.getType());
+        listing.setAddress(request.getAddress());
+        listing.setLatitude(request.getLatitude());
+        listing.setLongitude(request.getLongitude());
+        listing.setDynamicFields(request.getDynamicFields());
+        
         return listingRepository.save(listing);
     }
 

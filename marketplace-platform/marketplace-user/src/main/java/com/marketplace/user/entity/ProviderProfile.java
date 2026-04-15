@@ -35,7 +35,7 @@ public class ProviderProfile extends BaseEntity {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "specialties", columnDefinition = "jsonb")
-    private String specialties = "[]";
+    private java.util.List<String> specialties = new java.util.ArrayList<>();
 
     @Column(name = "license_number", length = 100)
     private String licenseNumber;
@@ -58,8 +58,8 @@ public class ProviderProfile extends BaseEntity {
     public void setBio(String bio) { this.bio = bio; }
     public ProviderType getType() { return type; }
     public void setType(ProviderType type) { this.type = type; }
-    public String getSpecialties() { return specialties; }
-    public void setSpecialties(String specialties) { this.specialties = specialties; }
+    public java.util.List<String> getSpecialties() { return specialties; }
+    public void setSpecialties(java.util.List<String> specialties) { this.specialties = specialties; }
     public String getLicenseNumber() { return licenseNumber; }
     public void setLicenseNumber(String licenseNumber) { this.licenseNumber = licenseNumber; }
     public boolean isVerified() { return verified; }

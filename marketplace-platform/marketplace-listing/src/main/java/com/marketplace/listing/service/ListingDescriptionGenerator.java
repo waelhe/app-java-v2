@@ -18,19 +18,21 @@ public class ListingDescriptionGenerator {
 
     public String generateDescription(Listing listing) {
         String template = """
-            Generate a compelling property description for a marketplace listing.
+            Generate a compelling marketplace listing description.
             Title: {title}
+            Type: {type}
             Category: {category}
             Base Price: {price} {currency}
             Address: {address}
             
             Please write a detailed, professional, and attractive description that highlights the features 
-            and benefits of this listing. Use a tone suitable for {category}.
+            and benefits of this {type} listing. Use a tone suitable for {category}.
             """;
 
         PromptTemplate promptTemplate = new PromptTemplate(template);
         Prompt prompt = promptTemplate.create(Map.of(
             "title", listing.getTitle(),
+            "type", listing.getType().name(),
             "category", listing.getCategory().getName(),
             "price", listing.getBasePrice(),
             "currency", listing.getCurrency(),

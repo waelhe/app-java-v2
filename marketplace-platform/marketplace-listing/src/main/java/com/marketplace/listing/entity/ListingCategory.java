@@ -35,7 +35,7 @@ public class ListingCategory extends BaseEntity {
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "schema_definition", columnDefinition = "jsonb")
-    private String schemaDefinition = "{}";
+    private java.util.Map<String, Object> schemaDefinition = new java.util.HashMap<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -59,8 +59,8 @@ public class ListingCategory extends BaseEntity {
     public void setSlug(String slug) { this.slug = slug; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public String getSchemaDefinition() { return schemaDefinition; }
-    public void setSchemaDefinition(String schemaDefinition) { this.schemaDefinition = schemaDefinition; }
+    public java.util.Map<String, Object> getSchemaDefinition() { return schemaDefinition; }
+    public void setSchemaDefinition(java.util.Map<String, Object> schemaDefinition) { this.schemaDefinition = schemaDefinition; }
     public ListingCategory getParent() { return parent; }
     public void setParent(ListingCategory parent) { this.parent = parent; }
     public List<ListingCategory> getChildren() { return children; }

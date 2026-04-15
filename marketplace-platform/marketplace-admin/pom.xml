@@ -14,6 +14,42 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.jmix.core</groupId>
+            <artifactId>jmix-core-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.data</groupId>
+            <artifactId>jmix-eclipselink-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.ui</groupId>
+            <artifactId>jmix-ui-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.ui</groupId>
+            <artifactId>jmix-ui-data-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.ui</groupId>
+            <artifactId>jmix-ui-themes-compiled</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.security</groupId>
+            <artifactId>jmix-security-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.security</groupId>
+            <artifactId>jmix-security-ui-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.security</groupId>
+            <artifactId>jmix-security-data-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jmix.localfs</groupId>
+            <artifactId>jmix-localfs-starter</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>

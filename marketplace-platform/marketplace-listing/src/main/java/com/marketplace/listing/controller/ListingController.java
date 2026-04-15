@@ -2,21 +2,15 @@ package com.marketplace.listing.controller;
 
 import com.marketplace.common.dto.ApiResponse;
 import com.marketplace.common.dto.PagedResponse;
+import com.marketplace.listing.dto.CreateListingRequest;
 import com.marketplace.listing.entity.Listing;
 import com.marketplace.listing.entity.ListingStatus;
 import com.marketplace.listing.service.ListingService;
-import java.math.BigDecimal;
+import jakarta.validation.Valid;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/listings")
@@ -29,17 +23,8 @@ public class ListingController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Listing>> createListing(
-            @RequestParam UUID providerId,
-            @RequestParam UUID categoryId,
-            @RequestParam String title,
-            @RequestParam String description,
-            @RequestParam String pricingModel,
-            @RequestParam BigDecimal basePrice,
-            @RequestParam String currency,
-            @RequestParam(required = false) String address) {
-        Listing listing = listingService.createListing(
-            providerId, categoryId, title, description, pricingModel, basePrice, currency, address);
+    public ResponseEntity<ApiResponse<Listing>> createListing(@RequestBody @Valid CreateListingRequest request) {
+        Listing listing = listingService.createListing(request);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(ApiResponse.success("Listing created successfully", listing));
     }

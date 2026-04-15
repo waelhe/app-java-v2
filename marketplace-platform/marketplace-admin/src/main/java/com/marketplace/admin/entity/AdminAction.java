@@ -1,6 +1,7 @@
 package com.marketplace.admin.entity;
 
 import com.marketplace.common.entity.BaseEntity;
+import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -8,6 +9,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
+@JmixEntity
 @Entity
 @Table(name = "admin_actions")
 public class AdminAction extends BaseEntity {
