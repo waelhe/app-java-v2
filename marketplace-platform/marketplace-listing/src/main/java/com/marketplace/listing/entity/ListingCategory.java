@@ -12,7 +12,9 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "listing_categories")
@@ -30,6 +32,10 @@ public class ListingCategory extends BaseEntity {
 
     @Column(name = "description", length = 500)
     private String description;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "schema_definition", columnDefinition = "jsonb")
+    private String schemaDefinition = "{}";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -53,6 +59,8 @@ public class ListingCategory extends BaseEntity {
     public void setSlug(String slug) { this.slug = slug; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    public String getSchemaDefinition() { return schemaDefinition; }
+    public void setSchemaDefinition(String schemaDefinition) { this.schemaDefinition = schemaDefinition; }
     public ListingCategory getParent() { return parent; }
     public void setParent(ListingCategory parent) { this.parent = parent; }
     public List<ListingCategory> getChildren() { return children; }

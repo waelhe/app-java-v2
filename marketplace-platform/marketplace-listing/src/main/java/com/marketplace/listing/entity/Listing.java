@@ -15,7 +15,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "listings")
@@ -39,6 +41,10 @@ public class Listing extends BaseEntity {
     private String description;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false, length = 20)
+    private ListingType type = ListingType.PRODUCT;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "pricing_model", nullable = false, length = 20)
     private PricingModel pricingModel = PricingModel.FIXED;
 
@@ -60,6 +66,10 @@ public class Listing extends BaseEntity {
 
     @Column(name = "longitude")
     private Double longitude;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "dynamic_fields", columnDefinition = "jsonb")
+    private String dynamicFields = "{}";
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "listing")
     private List<ListingMedia> media = new ArrayList<>();
@@ -86,6 +96,8 @@ public class Listing extends BaseEntity {
     public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+    public ListingType getType() { return type; }
+    public void setType(ListingType type) { this.type = type; }
     public PricingModel getPricingModel() { return pricingModel; }
     public void setPricingModel(PricingModel pricingModel) { this.pricingModel = pricingModel; }
     public BigDecimal getBasePrice() { return basePrice; }
@@ -100,6 +112,8 @@ public class Listing extends BaseEntity {
     public void setLatitude(Double latitude) { this.latitude = latitude; }
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public String getDynamicFields() { return dynamicFields; }
+    public void setDynamicFields(String dynamicFields) { this.dynamicFields = dynamicFields; }
     public List<ListingMedia> getMedia() { return media; }
     public void setMedia(List<ListingMedia> media) { this.media = media; }
 
