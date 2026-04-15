@@ -16,6 +16,7 @@ public class SearchResult {
     private String pricingModel;
     private Double averageRating;
     private Instant createdAt;
+    private Double distance;
 
     public SearchResult() {}
 
@@ -41,4 +42,6 @@ public class SearchResult {
     public void setAverageRating(Double averageRating) { this.averageRating = averageRating; }
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
+    public Double getDistance() { return distance; }
+    public void setDistance(Double distance) { this.distance = distance; }
 }

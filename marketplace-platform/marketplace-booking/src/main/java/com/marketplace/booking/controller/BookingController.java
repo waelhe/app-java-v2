@@ -35,13 +35,13 @@ public class BookingController {
             @RequestParam UUID listingId,
             @RequestParam Instant startDate,
             @RequestParam Instant endDate,
-            @RequestParam BigDecimal totalPrice,
+            @RequestParam BigDecimal basePrice,
             @RequestParam String currency,
             @RequestParam(required = false) String notes) {
         Booking booking = bookingService.createBooking(
-            consumerId, providerId, listingId, startDate, endDate, totalPrice, currency, notes);
+            consumerId, providerId, listingId, startDate, endDate, basePrice, currency, notes);
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(ApiResponse.success("Booking created successfully", booking));
+            .body(ApiResponse.success("Booking created successfully with dynamic pricing", booking));
     }
 
     @GetMapping("/{id}")

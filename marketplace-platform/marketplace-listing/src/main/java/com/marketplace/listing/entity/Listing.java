@@ -55,6 +55,12 @@ public class Listing extends BaseEntity {
     @Column(name = "address", length = 500)
     private String address;
 
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "listing")
     private List<ListingMedia> media = new ArrayList<>();
 
@@ -90,6 +96,10 @@ public class Listing extends BaseEntity {
     public void setStatus(ListingStatus status) { this.status = status; }
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
     public List<ListingMedia> getMedia() { return media; }
     public void setMedia(List<ListingMedia> media) { this.media = media; }
 

@@ -23,11 +23,22 @@ public class ListingService {
 
     private final ListingRepository listingRepository;
     private final ListingCategoryRepository categoryRepository;
+    private final ListingDescriptionGenerator descriptionGenerator;
 
     public ListingService(ListingRepository listingRepository,
-                          ListingCategoryRepository categoryRepository) {
+                          ListingCategoryRepository categoryRepository,
+                          ListingDescriptionGenerator descriptionGenerator) {
         this.listingRepository = listingRepository;
         this.categoryRepository = categoryRepository;
+        this.descriptionGenerator = descriptionGenerator;
+    }
+
+    @Transactional
+    public Listing generateAndSetDescription(UUID listingId) {
+        Listing listing = getListingById(listingId);
+        String description = descriptionGenerator.generateDescription(listing);
+        listing.setDescription(description);
+        return listingRepository.save(listing);
     }
 
     @Transactional

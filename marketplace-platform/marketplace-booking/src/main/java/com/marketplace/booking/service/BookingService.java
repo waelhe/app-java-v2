@@ -19,16 +19,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final DynamicPricingService dynamicPricingService;
 
-    public BookingService(BookingRepository bookingRepository) {
+    public BookingService(BookingRepository bookingRepository, DynamicPricingService dynamicPricingService) {
         this.bookingRepository = bookingRepository;
+        this.dynamicPricingService = dynamicPricingService;
     }
 
     @Transactional
     public Booking createBooking(UUID consumerId, UUID providerId, UUID listingId, 
-                                Instant startDate, Instant endDate, BigDecimal totalPrice, 
+                                Instant startDate, Instant endDate, BigDecimal basePrice, 
                                 String currency, String notes) {
         // Here you would normally check for overlapping bookings (RAG/Airbnb Logic)
+        BigDecimal totalPrice = dynamicPricingService.calculateTotalPrice(basePrice, startDate, endDate);
         Booking booking = new Booking(consumerId, providerId, listingId, startDate, endDate, totalPrice, currency, notes);
         return bookingRepository.save(booking);
     }

@@ -22,8 +22,13 @@ public class SearchRepository {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT l.id, l.title, l.description, l.provider_id, ");
         sql.append("pp.display_name AS provider_name, l.category_id, ");
-        sql.append("lc.name AS category_name, l.price, l.pricing_model, ");
-        sql.append("COALESCE(AVG(r.rating), 0) AS avg_rating, l.created_at ");
+        sql.append("lc.name AS category_name, l.base_price AS price, l.pricing_model, ");
+        sql.append("COALESCE(AVG(r.rating), 0) AS avg_rating, l.created_at, ");
+        if (criteria.getLatitude() != null && criteria.getLongitude() != null) {
+            sql.append("ST_Distance(l.location, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography) / 1000 AS distance ");
+        } else {
+            sql.append("NULL AS distance ");
+        }
         sql.append("FROM listings l ");
         sql.append("LEFT JOIN provider_profiles pp ON l.provider_id = pp.user_id AND pp.is_deleted = false ");
         sql.append("LEFT JOIN listing_categories lc ON l.category_id = lc.id AND lc.is_deleted = false ");
@@ -41,24 +46,30 @@ public class SearchRepository {
             sql.append("AND l.provider_id = :providerId ");
         }
         if (criteria.getMinPrice() != null) {
-            sql.append("AND l.price >= :minPrice ");
+            sql.append("AND l.base_price >= :minPrice ");
         }
         if (criteria.getMaxPrice() != null) {
-            sql.append("AND l.price <= :maxPrice ");
+            sql.append("AND l.base_price <= :maxPrice ");
+        }
+        if (criteria.getLatitude() != null && criteria.getLongitude() != null && criteria.getRadiusInKm() != null) {
+            sql.append("AND ST_DWithin(l.location, ST_SetSRID(ST_MakePoint(:longitude, :latitude), 4326)::geography, :radius * 1000) ");
         }
 
         sql.append("GROUP BY l.id, l.title, l.description, l.provider_id, ");
-        sql.append("pp.display_name, l.category_id, lc.name, l.price, l.pricing_model, l.created_at ");
+        sql.append("pp.display_name, l.category_id, lc.name, l.base_price, l.pricing_model, l.created_at, l.location ");
 
         if (criteria.getMinRating() != null) {
             sql.append("HAVING COALESCE(AVG(r.rating), 0) >= :minRating ");
         }
 
         String sortBy = switch (criteria.getSortBy()) {
-            case "price" -> "l.price";
+            case "price" -> "l.base_price";
             case "rating" -> "avg_rating";
             case "newest" -> "l.created_at";
-            default -> "ts_rank(to_tsvector('english', l.title), plainto_tsquery('english', :query))";
+            case "distance" -> "distance";
+            default -> criteria.getQuery() != null && !criteria.getQuery().isBlank() 
+                ? "ts_rank(to_tsvector('english', l.title), plainto_tsquery('english', :query))"
+                : "l.created_at";
         };
         String direction = "asc".equalsIgnoreCase(criteria.getSortDirection()) ? "ASC" : "DESC";
         sql.append("ORDER BY ").append(sortBy).append(" ").append(direction).append(" ");
@@ -82,6 +93,13 @@ public class SearchRepository {
         }
         if (criteria.getMinRating() != null) {
             query.setParameter("minRating", criteria.getMinRating());
+        }
+        if (criteria.getLatitude() != null && criteria.getLongitude() != null) {
+            query.setParameter("latitude", criteria.getLatitude());
+            query.setParameter("longitude", criteria.getLongitude());
+        }
+        if (criteria.getRadiusInKm() != null) {
+            query.setParameter("radius", criteria.getRadiusInKm());
         }
 
         query.setFirstResult((int) pageable.getOffset());
