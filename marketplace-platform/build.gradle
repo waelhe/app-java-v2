@@ -1,0 +1,211 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+    id 'org.springframework.boot' version '4.0.5' apply false
+    id 'org.springmodulith' version '2.0.5' apply false
+    id 'jacoco'
+    id 'com.github.spotbugs' version '6.1.7' apply false
+}
+
+// ============================================================================
+// Project-wide configuration
+// ============================================================================
+
+allprojects {
+    group = 'com.marketplace'
+    version = '0.1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/snapshot' }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
+    apply plugin: 'com.github.spotbugs'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(26)
+        }
+        sourceCompatibility = JavaVersion.VERSION_26
+        targetCompatibility = JavaVersion.VERSION_26
+    }
+
+    // ============================================================================
+    // Dependency Management - Centralized BOM imports
+    // ============================================================================
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:4.0.5"
+            mavenBom "org.springframework.modulith:spring-modulith-bom:2.0.5"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2025.1.0"
+        }
+
+        dependencies {
+            // PostgreSQL
+            dependency 'org.postgresql:postgresql:42.7.5'
+
+            // Flyway
+            dependency 'org.flywaydb:flyway-core:11.3.4'
+            dependency 'org.flywaydb:flyway-database-postgresql:11.3.4'
+
+            // MapStruct
+            dependency 'org.mapstruct:mapstruct:1.6.3'
+            dependency 'org.mapstruct:mapstruct-processor:1.6.3'
+
+            // Bucket4j
+            dependency 'com.bucket4j:bucket4j-core:8.17.0'
+            dependency 'com.bucket4j:bucket4j-redis:8.17.0'
+
+            // Resilience4j
+            dependency 'io.github.resilience4j:resilience4j-spring-boot3:2.3.0'
+            dependency 'io.github.resilience4j:resilience4j-circuitbreaker:2.3.0'
+            dependency 'io.github.resilience4j:resilience4j-ratelimiter:2.3.0'
+            dependency 'io.github.resilience4j:resilience4j-retry:2.3.0'
+            dependency 'io.github.resilience4j:resilience4j-timelimiter:2.3.0'
+
+            // Springdoc OpenAPI
+            dependency 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2'
+
+            // Lombok
+            dependency 'org.projectlombok:lombok:1.18.44'
+
+            // Testcontainers
+            dependency 'org.testcontainers:testcontainers:2.0.4'
+            dependency 'org.testcontainers:postgresql:2.0.4'
+            dependency 'org.testcontainers:junit-jupiter:2.0.4'
+
+            // SpotBugs
+            dependency 'com.github.spotbugs:spotbugs-annotations:4.9.5'
+        }
+    }
+
+    // ============================================================================
+    // Common dependencies for ALL subprojects
+    // ============================================================================
+
+    dependencies {
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        // MapStruct
+        implementation 'org.mapstruct:mapstruct'
+        annotationProcessor 'org.mapstruct:mapstruct-processor'
+
+        // Jakarta Annotations
+        implementation 'jakarta.annotation:jakarta.annotation-api'
+
+        // Logging
+        implementation 'org.slf4j:slf4j-api'
+
+        // Testing
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testImplementation 'org.mockito:mockito-core'
+        testImplementation 'org.mockito:mockito-junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    // ============================================================================
+    // Compilation options
+    // ============================================================================
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.compilerArgs += [
+            '-parameters',
+            '-Amapstruct.defaultComponentModel=spring',
+            '-Amapstruct.unmappedTargetPolicy=IGNORE'
+        ]
+    }
+
+    // ============================================================================
+    // Test configuration
+    // ============================================================================
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        jvmArgs += [
+            '-XX:+EnableDynamicAgentLoading',
+            '-Dnet.bytebuddy.experimental=true'
+        ]
+        testLogging {
+            events 'passed', 'failed', 'skipped'
+            showStandardStreams = true
+        }
+    }
+
+    // ============================================================================
+    // JaCoCo configuration
+    // ============================================================================
+
+    jacoco {
+        toolVersion = '0.8.14'
+    }
+
+    tasks.named('jacocoTestReport', JacocoReport).configure {
+        dependsOn tasks.named('test', Test)
+        reports {
+            xml.required = true
+            html.required = true
+            csv.required = false
+        }
+    }
+
+    tasks.named('check').configure {
+        dependsOn tasks.named('jacocoTestReport', JacocoReport)
+    }
+
+    // ============================================================================
+    // SpotBugs configuration
+    // ============================================================================
+
+    spotbugs {
+        ignoreFailures = false
+        effort = com.github.spotbugs.snom.Effort.MAX
+        reportLevel = com.github.spotbugs.snom.Confidence.LOW
+    }
+
+    tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+        reports {
+            html {
+                required = true
+                outputLocation = file("${buildDir}/reports/spotbugs/${name}.html")
+            }
+            xml {
+                required = true
+                outputLocation = file("${buildDir}/reports/spotbugs/${name}.xml")
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Root project JaCoCo aggregation
+// ============================================================================
+
+tasks.register('jacocoRootReport', JacocoReport) {
+    dependsOn subprojects.test
+
+    additionalClassDirs.setFrom(subprojects.collect { it.sourceSets.main.output })
+    additionalSourceDirs.setFrom(subprojects.collect { it.sourceSets.main.allSource })
+    executionData.setFrom(subprojects.collect { it.tasks.jacocoTestReport.executionData })
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+        xml.outputLocation = file("${buildDir}/reports/jacoco/root/jacocoRootReport.xml")
+        html.outputLocation = file("${buildDir}/reports/jacoco/root/html")
+    }
+}

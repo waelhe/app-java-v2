@@ -1,0 +1,23 @@
+// ============================================================================
+// marketplace-common - Shared utilities, DTOs, exceptions, and events
+// ============================================================================
+
+dependencies {
+    // Spring Context (for events, annotations)
+    api 'org.springframework:spring-context'
+
+    // Spring Web (for ResponseEntity, HTTP status codes)
+    api 'org.springframework:spring-web'
+
+    // Jakarta Persistence API (for JPA annotations on base entities)
+    api 'jakarta.persistence:jakarta.persistence-api'
+
+    // Jakarta Validation API
+    api 'jakarta.validation:jakarta.validation-api'
+
+    // Jackson annotations
+    api 'com.fasterxml.jackson.core:jackson-annotations'
+
+    // Spring Data Commons (for Pageable, Page)
+    api 'org.springframework.data:spring-data-commons'
+}

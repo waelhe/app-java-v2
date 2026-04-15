@@ -1,0 +1,64 @@
+// ============================================================================
+// marketplace-application - Main application assembly module
+// ============================================================================
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.springmodulith'
+
+dependencies {
+    // All internal modules
+    implementation project(':marketplace-common')
+    implementation project(':marketplace-identity')
+    implementation project(':marketplace-user')
+    implementation project(':marketplace-listing')
+    implementation project(':marketplace-booking')
+    implementation project(':marketplace-payment')
+    implementation project(':marketplace-review')
+    implementation project(':marketplace-notification')
+    implementation project(':marketplace-search')
+    implementation project(':marketplace-messaging')
+    implementation project(':marketplace-admin')
+
+    // Spring Boot Starters
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Spring Modulith
+    implementation 'org.springframework.modulith:spring-modulith-starter-core'
+    runtimeOnly 'org.springframework.modulith:spring-modulith-starter-jdbc'
+
+    // Observability - Micrometer + OpenTelemetry
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+
+    // Springdoc OpenAPI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+
+    // Database
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // Flyway
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
+    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.testcontainers:junit-jupiter'
+}
+
+// ============================================================================
+// Spring Boot build configuration
+// ============================================================================
+
+bootJar {
+    archiveBaseName = 'marketplace-platform'
+    archiveVersion = project.version
+}
+
+bootRun {
+    args = ['--spring.profiles.active=dev']
+}
