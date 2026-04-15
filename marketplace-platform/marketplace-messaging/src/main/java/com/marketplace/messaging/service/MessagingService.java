@@ -38,7 +38,7 @@ public class MessagingService {
 
     public Conversation getConversation(UUID conversationId) {
         return conversationRepository.findById(conversationId)
-            .filter(c -> !c.isDeleted())
+            .filter(c -> !c.getDeleted())
             .orElseThrow(() -> new ResourceNotFoundException("Conversation", conversationId));
     }
 

@@ -82,7 +82,7 @@ public class ListingService {
     @Transactional
     public void deleteListing(UUID listingId) {
         Listing listing = getListingById(listingId);
-        listing.setDeleted(true);
+        listing.softDelete();
         listingRepository.save(listing);
     }
 }

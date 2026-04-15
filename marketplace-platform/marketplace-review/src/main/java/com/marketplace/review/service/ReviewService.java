@@ -69,7 +69,7 @@ public class ReviewService {
     @Transactional
     public void deleteReview(UUID id) {
         Review review = getReviewById(id);
-        review.setDeleted(true);
+        review.softDelete();
         reviewRepository.save(review);
     }
 }
